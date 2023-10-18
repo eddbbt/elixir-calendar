@@ -39,6 +39,7 @@ defmodule CalendarTest.Accounts.User do
     |> cast(attrs, [:email, :password])
     |> validate_email(opts)
     |> validate_password(opts)
+    |> validate_account(opts)
   end
 
   defp validate_email(changeset, opts) do
@@ -58,6 +59,10 @@ defmodule CalendarTest.Accounts.User do
     # |> validate_format(:password, ~r/[A-Z]/, message: "at least one upper case character")
     # |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/, message: "at least one digit or punctuation character")
     |> maybe_hash_password(opts)
+  end
+  defp validate_account(changeset, _opts) do
+    changeset
+    |> put_change(:confirmed_at,NaiveDateTime.truncate( NaiveDateTime.utc_now(), :second))
   end
 
   defp maybe_hash_password(changeset, opts) do
