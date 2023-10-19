@@ -1,0 +1,9 @@
+<title>Eventi registrati:</title>
+<ul>
+  <%= Enum.map(@data, fn(item) -> %>
+    <li>
+      <%= item.title %> - <%= item.description %> -
+      start: <%= item.starting_date %> end: <%= item.end_date %>
+    </li>
+  <% end) %>
+</ul>
