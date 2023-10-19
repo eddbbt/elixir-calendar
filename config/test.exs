@@ -1,15 +1,18 @@
 import Config
 
+# Only in tests, remove the complexity from the password hashing algorithm
+config :bcrypt_elixir, :log_rounds, 1
+
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :calendar_test, CalendarTest.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "eddy",
+  password: "eddy",
   hostname: "localhost",
-  database: "calendar_test_test#{System.get_env("MIX_TEST_PARTITION")}",
+  database: "calendar_test_test",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
 
