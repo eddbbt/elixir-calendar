@@ -7,7 +7,6 @@ defmodule CalendarTest.Events.Event do
     field :title, :string
     field :starting_date, :utc_datetime
     field :end_date, :utc_datetime
-
     timestamps(type: :utc_datetime)
   end
 

@@ -50,9 +50,8 @@ defmodule CalendarTest.Events do
 
   """
   def create_event(attrs \\ %{}) do
-    %Event{}
-    |> Event.changeset(attrs)
-    |> Repo.insert()
+   changeset =  Event.changeset(%Event{}, attrs)
+   Repo.insert(changeset)
   end
 
   @doc """

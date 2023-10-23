@@ -20,6 +20,10 @@ defmodule CalendarTestWeb.EventController do
         conn
         |> put_flash(:info, "Event created successfully.")
         |> redirect(to: ~p"/events/#{event}")
+      {:error, %Ecto.Changeset{:errors => _} = _changeset} ->
+        conn
+        |> put_flash(:error, "Validation Error, check Title and dates")
+        |> redirect(to: ~p"/")
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, :new, changeset: changeset)
@@ -45,7 +49,10 @@ defmodule CalendarTestWeb.EventController do
         conn
         |> put_flash(:info, "Event updated successfully.")
         |> redirect(to: ~p"/events/#{event}")
-
+      {:error, %Ecto.Changeset{:errors => _} = _changeset} ->
+        conn
+        |> put_flash(:error, "Validation Error, check Title and dates")
+        |> redirect(to: ~p"/")
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, :edit, event: event, changeset: changeset)
     end
