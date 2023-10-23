@@ -21,6 +21,7 @@ defmodule CalendarTestWeb.Router do
     pipe_through :browser
 
     get "/", EventController, :index
+    get "/events/getcalendar", EventController, :events
   end
 
   # Other scopes may use custom stacks.

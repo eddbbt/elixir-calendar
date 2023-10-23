@@ -22,6 +22,33 @@ defmodule CalendarTest.Events do
   end
 
   @doc """
+  Returns the list of events by two dates
+
+  ## Examples
+
+      iex> list_events("start","end")
+      [%Event{}, ...]
+
+  """
+  def filter_events(startdate, enddate) do
+    query = from p in Event, where: p.starting_date >= ^startdate and p.end_date <= ^enddate
+    Repo.all(query)
+  end
+
+  def convert(list) when is_list(list) do
+    Enum.reduce(list, [], fn event, acc -> acc ++ [convert(event)] end)
+  end
+
+  def convert(event) when is_map(event) do
+    %{
+      title: event.title,
+      start: event.starting_date,
+      end: event.end_date,
+      url: "/events/#{event.id}"
+    }
+  end
+
+  @doc """
   Gets a single event.
 
   Raises `Ecto.NoResultsError` if the Event does not exist.
@@ -50,8 +77,8 @@ defmodule CalendarTest.Events do
 
   """
   def create_event(attrs \\ %{}) do
-   changeset =  Event.changeset(%Event{}, attrs)
-   Repo.insert(changeset)
+    changeset = Event.changeset(%Event{}, attrs)
+    Repo.insert(changeset)
   end
 
   @doc """
