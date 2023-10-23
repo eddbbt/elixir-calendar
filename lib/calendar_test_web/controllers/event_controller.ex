@@ -20,6 +20,7 @@ defmodule CalendarTestWeb.EventController do
         conn
         |> put_flash(:info, "Event created successfully.")
         |> redirect(to: ~p"/events/#{event}")
+
       {:error, %Ecto.Changeset{:errors => _} = _changeset} ->
         conn
         |> put_flash(:error, "Validation Error, check Title and dates")
@@ -49,10 +50,12 @@ defmodule CalendarTestWeb.EventController do
         conn
         |> put_flash(:info, "Event updated successfully.")
         |> redirect(to: ~p"/events/#{event}")
+
       {:error, %Ecto.Changeset{:errors => _} = _changeset} ->
         conn
         |> put_flash(:error, "Validation Error, check Title and dates")
         |> redirect(to: ~p"/")
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, :edit, event: event, changeset: changeset)
     end
@@ -65,5 +68,14 @@ defmodule CalendarTestWeb.EventController do
     conn
     |> put_flash(:info, "Event deleted successfully.")
     |> redirect(to: ~p"/events")
+  end
+
+  def events(conn, %{"start" => start_date, "end" => end_date} = _params) do
+    data =
+      Events.filter_events(start_date, end_date)
+      |> Events.convert()
+
+    # instead of render and a view, use json to a quick json serializing and return
+    json(conn, data)
   end
 end

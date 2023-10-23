@@ -6,5 +6,5 @@
 <.event_form changeset={@changeset} action={~p"/events"} />
 
 <%= if assigns[:modal]==nil do %>
-<.back navigate={~p"/"}>Back to events</.back>
-<%= end %>
+  <.back navigate={~p"/"}>Back to events</.back>
+<% end %>

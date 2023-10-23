@@ -3,32 +3,67 @@
   <:actions>
     <.button phx-click={show_modal("new-event")}>New</.button>
     <.modal id="new-event">
-      <.new modal="true" changeset={CalendarTest.Events.change_event(%CalendarTest.Events.Event{})} />
+      <.new
+        modal="true"
+        changeset={CalendarTest.Events.change_event(%CalendarTest.Events.Event{})}
+      />
     </.modal>
   </:actions>
 </.header>
 
-<.table id="events" rows={@events} row_click={&JS.navigate(~p"/events/#{&1}")}>
-  <:col :let={event} label="Title"><%= event.title %></:col>
-  <:col :let={event} label="Description"><%= event.description %></:col>
-  <:col :let={event} label="Starting date"><%= event.starting_date %></:col>
-  <:col :let={event} label="End date"><%= event.end_date %></:col>
-  <:action :let={event}>
-    <div class="sr-only">
-      <.link navigate={~p"/events/#{event}"}>Show</.link>
-    </div>
-    <.button phx-click={show_modal("user-modal-#{event.id}")}>Edit</.button>
-    <.modal id={"user-modal-#{event.id}"}>
-      <.edit modal="true"
-        changeset={CalendarTest.Events.change_event(CalendarTest.Events.get_event!(event.id))}
-        event={event}
-      />
-    </.modal>
-  </:action>
+<.button id="showcalendar">Calendar</.button>
+<.button id="showlist">List</.button>
 
-  <:action :let={event}>
-    <.link href={~p"/events/#{event}"} method="delete" data-confirm="Are you sure?">
-      Delete
-    </.link>
-  </:action>
-</.table>
+<div class="hidden" id="events-table">
+  <.table id="events" rows={@events} row_click={&JS.navigate(~p"/events/#{&1}")}>
+    <:col :let={event} label="Title"><%= event.title %></:col>
+    <:col :let={event} label="Description"><%= event.description %></:col>
+    <:col :let={event} label="Starting date"><%= event.starting_date %></:col>
+    <:col :let={event} label="End date"><%= event.end_date %></:col>
+    <:action :let={event}>
+      <div class="sr-only">
+        <.link navigate={~p"/events/#{event}"}>Show</.link>
+      </div>
+      <.button phx-click={show_modal("user-modal-#{event.id}")}>Edit</.button>
+      <.modal id={"user-modal-#{event.id}"}>
+        <.edit
+          modal="true"
+          changeset={CalendarTest.Events.change_event(CalendarTest.Events.get_event!(event.id))}
+          event={event}
+        />
+      </.modal>
+    </:action>mn
+
+    <:action :let={event}>
+      <.link href={~p"/events/#{event}"} method="delete" data-confirm="Are you sure?">
+        Delete
+      </.link>
+    </:action>
+  </.table>
+</div>
+
+<div id="calendar-view"></div>
+
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+          var calendarEl = document.getElementById('calendar-view');
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+           headerToolbar: { center: 'dayGridMonth,timeGridWeek' },
+            initialView: 'dayGridMonth',
+          events: "/events/getcalendar",
+           timeZone: 'UTC'
+          });
+          calendar.render();
+        });
+
+  $('#showcalendar').click(()=>{
+      $('#events-table').hide()
+      $('#calendar-view').show()
+  })
+  $('#showlist').click(()=>{
+      $('#events-table').show()
+      $('#calendar-view').hide()
+  })
+
+      
+</script>
