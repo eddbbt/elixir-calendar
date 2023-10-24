@@ -1,0 +1,17 @@
+<.header>
+  Event <%= @event.id %>WSS
+  <:actions>
+    <.link href={~p"/events/#{@event}/edit"}>
+      <.button>Edit event</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Title"><%= @event.title %></:item>
+  <:item title="Description"><%= @event.description %></:item>
+  <:item title="Starting date"><%= @event.starting_date %></:item>
+  <:item title="End date"><%= @event.end_date %></:item>
+</.list>
+
+<.back navigate={~p"/"}>Back to events</.back>

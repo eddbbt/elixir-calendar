@@ -1,0 +1,10 @@
+<.header>
+  New Event
+  <:subtitle>Use this form to manage event records in your database.</:subtitle>
+</.header>
+
+<.event_form changeset={@changeset} action={~p"/events"} />
+
+<%= if assigns[:modal]==nil do %>
+<.back navigate={~p"/"}>Back to events</.back>
+<%= end %>
